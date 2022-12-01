@@ -17,9 +17,10 @@ html(lang="en")
                     input#roomName(type="text", required, placeholder="Room Name")
                     input#nickname(type="text", required, placeholder="Your Nickname")
                     button#enterbtn Enter Room
-                    button#loginbtn login
+                    button#loginbtn(onclick="location.href = 'auth/google'") login
                     button#logoutbtn(onclick="location.href = 'auth/logout'") logout
-                    h1#invtxt 초대 받은 회의에 입장하려면 로그인 후에 초대 링크로 다시접속해주세요.
+                    h1#invtxt 회
+                    
                     
             div#call(class="call")
                 div=roomName
@@ -72,5 +73,6 @@ html(lang="en")
             inickName = "#{inickName}";
             islogin = "#{islogin}";
             email = "#{email}";
+            name = "#{name}"
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/bundle.js")
