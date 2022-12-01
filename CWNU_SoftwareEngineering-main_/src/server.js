@@ -28,7 +28,8 @@ let db = [{
     name : 'goodmemory',
     provider : '',
     token : '',
-    providerId : '',
+    providerId : ''
+   
 }];
 
 
@@ -109,17 +110,17 @@ app.get('/login/callback',
   passport.authenticate('google', { failureRedirect: '/auth/login'}),
   function(req, res) {
     res.redirect('/');
-    
   });
 
 
 //기본 홈페이지 (req.user는 passport의 serialize를 통해 user 정보 저장되어있음)
 app.get('/',(req,res)=>{
   const email = getEmail(req.user);
+  const name = getUserName(req.user);
   if (email === "비회원"){
-    res.render("home", { email, islogin : false, invite : false});
+    res.render("home", { name, email, islogin : false, invite : false});
   } else{
-    res.render("home", { email, islogin : true, invite : false});
+    res.render("home", { name, email, islogin : true, invite : false});
   }
 
 });
@@ -146,6 +147,11 @@ app.use((err,req,res,next)=>{
 //사용자 이메일 가져오는 함수 ** 비로그인시 undefined 이므로 로그인/비로그인 구분 가능
 const getEmail = (user) =>{
   return user !== undefined ?  `${user.email}` : "비회원";
+}
+
+//사용자 이름 가져오는 함수 ** 비로그인시 undefined 이므로 로그인/비로그인 구분 가능
+const getUserName = (user) =>{
+  return user !== undefined ?  `${user.name}` : "비회원";
 }
 
 //db에 invited 항목을 추가하는 방법 시도 ::: 실패
@@ -200,8 +206,9 @@ app.post("/reservation", async (req, res) => {
 app.get("/chat", (req, res) => {
   const { iroomName, inickName } = req.query;
   const email = getEmail(req.user);
+  const name = getUserName(req.user);
   if (email === "비회원"){
-    return res.render("home", { iroomName, inickName, email, islogin : false, invite : true});
+    return res.render("home", { name, iroomName, inickName, email, islogin : false, invite : true});
   } else{
     return res.render("home", { iroomName, inickName, email, islogin : true, invite : true});
   }
